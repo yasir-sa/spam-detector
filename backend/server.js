@@ -17,6 +17,8 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 const AI_API_URL = process.env.AI_API_URL || "https://spam-detector-z8w0.onrender.com";
+const AI_API_KEY = process.env.AI_API_KEY;
+if (!AI_API_KEY) console.warn("AI_API_KEY not set - AI API will reject requests");
 
 // PostgreSQL connect (DATABASE_URL irundhaa mattum - history save panna)
 let dbConnected = false;
@@ -41,7 +43,7 @@ app.post("/api/check", async (req, res) => {
   try {
     const aiRes = await fetch(`${AI_API_URL}/predict`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-API-Key": AI_API_KEY },
       body: JSON.stringify({ text }),
     });
     if (!aiRes.ok) throw new Error(`AI API status ${aiRes.status}`);
