@@ -5,9 +5,14 @@ import { pool, initDb } from "./db.js";
 
 const app = express();
 
-// Production la FRONTEND_URL mattum allow, local la ellam allow
-const FRONTEND_URL = process.env.FRONTEND_URL;
-app.use(cors(FRONTEND_URL ? { origin: [FRONTEND_URL, "http://localhost:5173"] } : {}));
+// FRONTEND_URL la irukkura URL mattum allow (comma vachu multiple kudukkalam)
+// Local .env = http://localhost:5173, Render env = production UI URL
+const allowedOrigins = (process.env.FRONTEND_URL || "")
+  .split(",")
+  .map((url) => url.trim())
+  .filter(Boolean);
+if (allowedOrigins.length === 0) console.warn("FRONTEND_URL not set - all browser requests blocked");
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
