@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+// npm run dev -> local backend, npm run build (Render) -> production backend
+const BACKEND_URL = import.meta.env.DEV
+  ? "http://localhost:5000"
+  : "https://spam-detector-backend-gcey.onrender.com";
+
+// User try panni paakka sample messages
+const SAMPLES = [
+  { type: "spam", text: "Congratulations! You won a free prize. Call now to claim" },
+  { type: "spam", text: "URGENT! Your account is selected for a cash reward. Click the link" },
+  { type: "ham", text: "Hi, are we meeting tomorrow at 5 PM?" },
+  { type: "ham", text: "Can you send me the notes from today's class?" },
+];
 
 function App() {
   const [text, setText] = useState("");
@@ -57,6 +68,23 @@ function App() {
     <div className="container">
       <h1>📩 SMS Spam Detector</h1>
       <p className="subtitle">Message type pannunga, AI adhu spam-aa illaiyaa-nu sollum</p>
+
+      <div className="samples">
+        <p className="note">Try pannunga, click pannaa box-la fill aagum:</p>
+        {SAMPLES.map((s) => (
+          <button
+            key={s.text}
+            type="button"
+            className={`sample ${s.type}`}
+            onClick={() => {
+              setText(s.text);
+              setResult(null);
+            }}
+          >
+            {s.type === "spam" ? "⚠️" : "✅"} {s.text}
+          </button>
+        ))}
+      </div>
 
       <form onSubmit={checkMessage}>
         <textarea

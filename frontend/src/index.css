@@ -24,6 +24,29 @@ h1 {
   margin-top: 0;
 }
 
+.samples {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.sample {
+  padding: 8px 12px;
+  font-size: 14px;
+  text-align: left;
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+.sample.spam:hover {
+  border-color: #b91c1c;
+}
+
+.sample.ham:hover {
+  border-color: #15803d;
+}
+
 form {
   display: flex;
   flex-direction: column;
